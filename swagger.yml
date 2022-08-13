@@ -1,0 +1,287 @@
+openapi: "3.0.0"
+info:
+  title: "My API"
+  version: "1.0.0"
+components:
+  responses:
+    Forbidden:
+      description: "Access token is missing or invalid"
+    Accepted:
+      description: "The request was accepted"
+    Created:
+      description: "The resource has been created"
+    NotFound:
+      description: "The resource has been created"
+    NotAcceptable:
+      description: "The resource has been created"
+  securitySchemes:
+    BearerAuth:
+      type: "http"
+      scheme: "bearer"
+  schemas:
+    Any:
+      description: "Any JSON object not defined as schema"
+    Animal:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 604
+        name:
+          type: "string"
+          example: "John Doe"
+        description:
+          type: "string"
+          example: "Lorem ipsum dolor sit amet"
+        type:
+          type: "string"
+          example: "string"
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+      description: "Model"
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 142
+        name:
+          type: "string"
+          example: "John Doe"
+        email:
+          type: "string"
+          example: "johndoe@example.com"
+          format: "email"
+        remember_me_token:
+          type: "string"
+          example: "string"
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+      description: "Model"
+paths:
+  /uploads/*:
+    get:
+      summary: " (route.ts)"
+      description: ""
+      parameters: []
+      tags:
+        - "*"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+  /api/animals:
+    get:
+      summary: "Get a list of animals (AnimalsController::index)"
+      description: "Returns a **list** of type `Product` **including** _relations_. Take a look at the example for further details."
+      parameters:
+        - in: "query"
+          name: "sortBy"
+          schema:
+            type: "string"
+            example: "foo"
+        - in: "query"
+          name: "sortType"
+          schema:
+            type: "string"
+            example: "ASC"
+      tags:
+        - "ANIMALS"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Product"
+              example:
+                - {}
+          description: "Returns a **list** of type `Product` **including** _relations_. Take a look at the example for further details."
+          headers:
+            X-Total-Pages:
+              description: "Total amount of pages"
+              schema:
+                type: "integer"
+                example: 5
+            X-Total:
+              description: "Total amount of results"
+              schema:
+                type: "integer"
+                example: 100
+            X-Per-Page:
+              description: "Results per page"
+              schema:
+                type: "integer"
+                example: 20
+            X-pages:
+              schema:
+                type: "string"
+                example: "test"
+              description: "A description of the header"
+      security: []
+    post:
+      summary: " (AnimalsController::store)"
+      description: ""
+      parameters: []
+      tags:
+        - "ANIMALS"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+  /api/animals/{id}:
+    get:
+      summary: "Get a single instance of animals (AnimalsController::show)"
+      description: "Returns a **single** instance of type `Product` **including** _user, user.relations_. Take a look at the example for further details."
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "Describe the param"
+          schema:
+            example: "string"
+            type: "string"
+          required: true
+      tags:
+        - "ANIMALS"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              example: {}
+          description: "Returns a **single** instance of type `Product` **including** _user, user.relations_. Take a look at the example for further details."
+        404:
+          description: "Not Found"
+      security: []
+    put:
+      summary: "Update animals (AnimalsController::update)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "ANIMALS"
+      responses:
+        200:
+          description: "OK"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found: Product could not be found"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+            example: {}
+    delete:
+      summary: "Delete animals (AnimalsController::destroy)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "ANIMALS"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/login:
+    post:
+      summary: " (AuthController::login)"
+      description: ""
+      parameters: []
+      tags:
+        - "LOGIN"
+      responses:
+        201:
+          description: "Created"
+          content:
+            application/json: {}
+      security: []
+      requestBody:
+        content:
+          application/json: {}
+  /api/register:
+    post:
+      summary: " (AuthController::register)"
+      description: ""
+      parameters: []
+      tags:
+        - "REGISTER"
+      responses:
+        201:
+          description: "Created"
+          content:
+            application/json: {}
+      security: []
+      requestBody:
+        content:
+          application/json: {}
+  /api/logout:
+    post:
+      summary: " (AuthController::logout)"
+      description: ""
+      parameters: []
+      tags:
+        - "LOGOUT"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+tags:
+  - name: "*"
+    description: "Everything related to *"
+  - name: "ANIMALS"
+    description: "Everything related to ANIMALS"
+  - name: "LOGIN"
+    description: "Everything related to LOGIN"
+  - name: "REGISTER"
+    description: "Everything related to REGISTER"
+  - name: "LOGOUT"
+    description: "Everything related to LOGOUT"
