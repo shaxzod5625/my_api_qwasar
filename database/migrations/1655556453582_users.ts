@@ -13,9 +13,9 @@ export default class extends BaseSchema {
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       // @ts-ignore: Unreachable code error
-      table.timestamp('created_at').defaultTo(this.schema.raw('NOW'))
+      table.timestamp('created_at').defaultTo(new Date())
       // @ts-ignore: Unreachable code error
-      table.timestamp('updated_at').defaultTo(this.schema.raw('NOW'))
+      table.timestamp('updated_at').defaultTo(new Date())
     })
   }
 
